@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
+import { Carrinho } from '../interface/carrinho';
 import { Produto } from '../interface/produto';
 import { ProdutoEscolhidoService } from '../service/produto-escolhido.service';
 
@@ -10,8 +13,19 @@ import { ProdutoEscolhidoService } from '../service/produto-escolhido.service';
 export class DetalhePage implements OnInit {
   produto: Produto;
   quantidade: number = 1;
-  constructor(private prodService: ProdutoEscolhidoService) {
+  carrinho: Carrinho[];
+
+  constructor(
+    private prodService: ProdutoEscolhidoService,
+    private storage: Storage
+  ) {
     this.produto = prodService.produto;
+    this.iniciarBanco();
+  }
+
+  async iniciarBanco(){
+    await this.storage.create();
+    this.carrinho = await this.storage.get('carrinho') ?? [];
   }
 
   subQtd() {
@@ -21,6 +35,11 @@ export class DetalhePage implements OnInit {
 
   addQtd(){
     this.quantidade++;
+  }
+
+  addCarrinho(){
+    this.carrinho.push({quantidade: this.quantidade, produto: this.produto});
+    this.storage.set('carrinho', this.carrinho);
   }
 
   ngOnInit() {
