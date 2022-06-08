@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Categoria } from '../interface/categoria';
 import { Produto } from '../interface/produto';
+import { ProdutoEscolhidoService } from '../service/produto-escolhido.service';
 
 @Component({
   selector: 'app-home',
@@ -12,16 +13,23 @@ export class HomePage {
   URL_BASE = 'http://lucasreno.kinghost.net/delivery';
   dados: Categoria[] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private prodService: ProdutoEscolhidoService
+  ) {
     this.pegarDados();
   }
 
+  salvarProduto(produto: Produto) {
+    this.prodService.produto = produto;
+  }
+
   pegarDados() {
-    this.http.get<Categoria[]>(this.URL_BASE+'/categorias').subscribe(
+    this.http.get<Categoria[]>(this.URL_BASE + '/categorias').subscribe(
       resposta => {
         this.dados = resposta;
         this.dados.forEach(dado => {
-          this.http.get<Produto[]>(this.URL_BASE+'/produtos/'+dado.idCategoria).subscribe(
+          this.http.get<Produto[]>(this.URL_BASE + '/produtos/' + dado.idCategoria).subscribe(
             resp => {
               dado.produtos = resp;
             }
