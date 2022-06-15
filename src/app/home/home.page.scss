@@ -14,3 +14,28 @@
   color: #888;
   font-size: 22px;
 }
+footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #8fbaff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+footer ion-icon{
+  font-size: 24px;
+}
+footer h4{
+  margin: 0;
+  font-size: 18px;
+}
+footer p{
+  font-size: 18px;
+  font-weight: bold;
+}
+.fix{
+  padding-top: 60px;
+}
